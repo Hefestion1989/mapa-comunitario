@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { categoryLabels, resources, urgencyLabels } from "./data/resources";
+import { searchOnlineResources } from "./onlineSearch";
 import type { Category, LocalNote, Resource } from "./types";
 import { buildReferralText, classNames, matchesResource } from "./utils";
 
@@ -40,6 +41,10 @@ function App() {
   const [favorites, setFavorites] = useState<string[]>(() => readJson(STORAGE_FAVORITES, []));
   const [notes, setNotes] = useState<Record<string, LocalNote>>(() => readJson(STORAGE_NOTES, {}));
   const [customResources, setCustomResources] = useState<Resource[]>(() => readJson(STORAGE_CUSTOM, []));
+  const [onlineResources, setOnlineResources] = useState<Resource[]>([]);
+  const [onlineStatus, setOnlineStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [onlineMessage, setOnlineMessage] = useState("");
+  const [onlinePlace, setOnlinePlace] = useState("");
   const [selectedId, setSelectedId] = useState(resources[0].id);
   const [draftNote, setDraftNote] = useState("");
   const [copyState, setCopyState] = useState("");
@@ -48,8 +53,8 @@ function App() {
   const [customArea, setCustomArea] = useState("Montevideo");
 
   const allResources = useMemo(
-    () => [...resources, ...customResources],
-    [customResources],
+    () => [...resources, ...onlineResources, ...customResources],
+    [customResources, onlineResources],
   );
 
   const filteredResources = useMemo(() => {
@@ -94,6 +99,7 @@ function App() {
 
   const stats = {
     verified: resources.length,
+    online: onlineResources.length,
     favorites: favorites.length,
     localNotes: Object.keys(notes).length,
   };
@@ -108,6 +114,41 @@ function App() {
     await navigator.clipboard.writeText(buildReferralText(resource));
     setCopyState("Derivacion copiada");
     window.setTimeout(() => setCopyState(""), 1800);
+  }
+
+  async function runOnlineSearch() {
+    const trimmed = query.trim();
+    setOnlineStatus("loading");
+    setOnlineMessage("Buscando recursos online...");
+    setOnlineResources([]);
+    setOnlinePlace("");
+    setOnlyFavorites(false);
+    try {
+      const result = await searchOnlineResources(trimmed);
+      setOnlineResources(result.resources);
+      setOnlinePlace(result.placeLabel);
+      setOnlineStatus("success");
+      setOnlineMessage(
+        result.resources.length
+          ? `${result.resources.length} recursos online cerca de ${result.placeLabel}`
+          : `No aparecieron recursos online cerca de ${result.placeLabel}`,
+      );
+      if (result.resources[0]) {
+        setCategory("todos");
+        setSelectedId(result.resources[0].id);
+      }
+    } catch (error) {
+      setOnlineStatus("error");
+      setOnlineMessage(error instanceof Error ? error.message : "No se pudo completar la busqueda online.");
+    }
+  }
+
+  function clearOnlineResults() {
+    setOnlineResources([]);
+    setOnlineStatus("idle");
+    setOnlineMessage("");
+    setOnlinePlace("");
+    setSelectedId(resources[0].id);
   }
 
   function saveNote() {
@@ -247,10 +288,33 @@ function App() {
           >
             Favoritos
           </button>
+          <button
+            className="primary online-button"
+            onClick={runOnlineSearch}
+            disabled={onlineStatus === "loading"}
+          >
+            {onlineStatus === "loading" ? "Buscando..." : "Buscar online"}
+          </button>
         </header>
+
+        {(onlineMessage || onlineResources.length > 0) && (
+          <section className={classNames("online-strip", onlineStatus)}>
+            <div>
+              <strong>{onlineStatus === "error" ? "Busqueda online" : "Fuente online"}</strong>
+              <span>{onlineMessage}</span>
+              {onlinePlace && <small>OpenStreetMap / Overpass</small>}
+            </div>
+            {onlineResources.length > 0 && (
+              <button className="secondary compact" onClick={clearOnlineResults}>
+                Limpiar online
+              </button>
+            )}
+          </section>
+        )}
 
         <section className="stats-row" aria-label="Resumen">
           <Metric label="Recursos verificados" value={stats.verified} />
+          <Metric label="Online" value={stats.online} />
           <Metric label="Favoritos" value={stats.favorites} />
           <Metric label="Notas locales" value={stats.localNotes} />
           <Metric label="Resultados" value={filteredResources.length} />
@@ -343,6 +407,7 @@ function ResourceRow({
         <span>{categoryLabels[resource.category]}</span>
         {resource.phone && <span>{resource.phone}</span>}
         {hasNote && <span>Nota local</span>}
+        {resource.isOnline && <span>Online</span>}
         <button
           className={classNames("icon-button", favorite && "is-active")}
           onClick={onFavorite}
@@ -401,6 +466,12 @@ function DetailPanel({
               <strong>{resource.whatsapp}</strong>
             </div>
           )}
+          {resource.address && (
+            <div className="contact-action muted">
+              <span>Direccion</span>
+              <strong>{resource.address}</strong>
+            </div>
+          )}
           {resource.website && (
             <a className="contact-action" href={resource.website} target="_blank" rel="noreferrer">
               <span>Sitio oficial</span>
@@ -435,7 +506,7 @@ function DetailPanel({
               Ver fuente
             </a>
           )}
-          <span>Verificado: {resource.verifiedAt}</span>
+          <span>{resource.isOnline ? "Consultado" : "Verificado"}: {resource.verifiedAt}</span>
         </section>
       </div>
 

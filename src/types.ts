@@ -23,6 +23,9 @@ export type Resource = {
   whatsapp?: string;
   website?: string;
   hours?: string;
+  address?: string;
+  distanceMeters?: number;
+  isOnline?: boolean;
   notes: string;
   referral: string;
   sourceName: string;

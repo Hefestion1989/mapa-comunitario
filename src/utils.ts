@@ -15,6 +15,7 @@ export function matchesResource(resource: Resource, query: string): boolean {
       resource.name,
       resource.organization,
       resource.scope,
+      resource.address || "",
       resource.notes,
       resource.referral,
       resource.category,
@@ -33,9 +34,10 @@ export function buildReferralText(resource: Resource): string {
     resource.referral,
     resource.phone ? `Telefono: ${resource.phone}` : "",
     resource.whatsapp ? `WhatsApp / marcacion corta: ${resource.whatsapp}` : "",
+    resource.address ? `Direccion: ${resource.address}` : "",
     resource.website ? `Web: ${resource.website}` : "",
-    `Fuente: ${resource.sourceName} (${resource.sourceUrl})`,
-    `Verificado: ${resource.verifiedAt}`,
+    resource.sourceUrl ? `Fuente: ${resource.sourceName} (${resource.sourceUrl})` : `Fuente: ${resource.sourceName}`,
+    `${resource.isOnline ? "Consultado" : "Verificado"}: ${resource.verifiedAt}`,
   ].filter(Boolean);
 
   return lines.join("\n");

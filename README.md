@@ -2,11 +2,12 @@
 
 Directorio local de recursos comunitarios para orientar y derivar en Uruguay.
 
-La idea es simple: buscar una situacion, encontrar un recurso verificado, copiar una derivacion breve y guardar notas locales sin depender de una base de datos externa.
+La idea es simple: buscar una situacion, encontrar un recurso verificado u online, copiar una derivacion breve y guardar notas locales.
 
 ## Que incluye
 
 - Busqueda por situacion, institucion, publico, zona o telefono.
+- Busqueda online por barrio o zona usando fuentes abiertas.
 - Filtros por salud mental, violencia, calle, consumo, trabajo, educacion, tramites y emergencia.
 - Fichas con telefono, horarios, fuente oficial y fecha de verificacion.
 - Favoritos y notas locales guardadas en el navegador.
@@ -19,6 +20,8 @@ La idea es simple: buscar una situacion, encontrar un recurso verificado, copiar
 Esta herramienta no reemplaza atencion profesional, asesoramiento legal ni servicios de emergencia. Si hay riesgo inmediato para la vida, violencia en curso o una emergencia, llamar al 911 o al servicio de urgencia correspondiente.
 
 Los datos de contacto pueden cambiar. Antes de usar la app en un contexto institucional, conviene revisar las fuentes oficiales y actualizar `src/data/resources.ts`.
+
+Los resultados online salen de OpenStreetMap mediante Nominatim y Overpass. Son utiles para ampliar cobertura barrial, pero pueden estar incompletos o desactualizados si la comunidad aun no corrigio el dato.
 
 ## Desarrollo local
 
@@ -37,8 +40,13 @@ npm run build
 
 La app no tiene servidor propio. Favoritos, notas y recursos agregados se guardan en el navegador de la persona usuaria mediante `localStorage`.
 
+Al usar "Buscar online", el texto de busqueda se consulta contra servicios publicos de OpenStreetMap para ubicar la zona y traer recursos cercanos.
+
 ## Fuentes iniciales
 
+- [Nominatim Search API](https://nominatim.org/release-docs/latest/api/Search/)
+- [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/)
+- [Overpass API / Overpass QL](https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL)
 - [Linea Vida y apoyo emocional](https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias/prevencion-del-suicidio-0)
 - [Servicio telefonico por violencia domestica](https://www.gub.uy/ministerio-desarrollo-social/node/9758)
 - [Guia MSP de valoracion del riesgo suicida](https://www.gub.uy/ministerio-salud-publica/comunicacion/publicaciones/valoracion-del-riesgo-suicida-5-pasos-para-evaluacion-triage-guia-para)

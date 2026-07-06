@@ -6,6 +6,7 @@ Mapa Comunitario esta pensado como una herramienta local y liviana.
 - No requiere crear cuenta.
 - No usa base de datos remota.
 - Guarda datos locales en `localStorage`, dentro del navegador.
+- Cuando se usa "Buscar online", la zona escrita se envia a servicios publicos de OpenStreetMap para ubicar recursos cercanos.
 
 Si se publica una version institucional o multiusuario, revisar esta politica antes de recolectar datos personales.
 
