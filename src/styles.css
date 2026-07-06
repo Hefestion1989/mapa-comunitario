@@ -247,6 +247,64 @@ a {
   white-space: nowrap;
 }
 
+.online-guide {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 14px;
+  border: 1px solid #dce8e2;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.online-guide div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.online-guide strong {
+  color: #123331;
+  font-size: 14px;
+}
+
+.online-guide span {
+  color: #647872;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.area-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.area-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  border: 1px solid #cfe0d9;
+  border-radius: 999px;
+  padding: 0 10px;
+  background: #ffffff;
+  color: #123331;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.area-chip:hover {
+  border-color: #1f7a6d;
+  color: #1f7a6d;
+}
+
+.area-chip small {
+  color: #647872;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .toggle-favorites,
 .secondary {
   border: 1px solid #d9e4df;
@@ -382,7 +440,7 @@ a {
 
 .resource-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
   align-items: center;
   margin-bottom: 10px;
@@ -439,11 +497,11 @@ a {
 .row-meta {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
-  padding-right: 12px;
+  padding: 0 12px 12px;
   color: #647872;
   font-size: 12px;
-  white-space: nowrap;
 }
 
 .row-meta span {
@@ -731,9 +789,15 @@ a {
 
   .topbar,
   .detail-actions,
-  .online-strip {
+  .online-strip,
+  .online-guide {
     grid-template-columns: 1fr;
     display: grid;
+  }
+
+  .area-suggestions {
+    max-height: 126px;
+    overflow-y: auto;
   }
 
   .stats-row {

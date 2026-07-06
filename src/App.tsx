@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { getMontevideoAreaSuggestions, montevideoAreas, type MontevideoArea } from "./data/montevideoAreas";
 import { categoryLabels, resources, urgencyLabels } from "./data/resources";
 import { searchOnlineResources } from "./onlineSearch";
 import type { Category, LocalNote, Resource } from "./types";
@@ -73,6 +74,11 @@ function App() {
     );
   }, [allResources, filteredResources, selectedId]);
 
+  const areaSuggestions = useMemo(
+    () => getMontevideoAreaSuggestions(query, query.trim() ? 10 : 8),
+    [query],
+  );
+
   useEffect(() => {
     if (!filteredResources.some((resource) => resource.id === selectedId) && filteredResources[0]) {
       setSelectedId(filteredResources[0].id);
@@ -116,8 +122,11 @@ function App() {
     window.setTimeout(() => setCopyState(""), 1800);
   }
 
-  async function runOnlineSearch() {
-    const trimmed = query.trim();
+  async function runOnlineSearch(searchValue?: string) {
+    const trimmed = (searchValue || query).trim();
+    if (searchValue !== undefined) {
+      setQuery(searchValue);
+    }
     setOnlineStatus("loading");
     setOnlineMessage("Buscando recursos online...");
     setOnlineResources([]);
@@ -139,7 +148,11 @@ function App() {
       }
     } catch (error) {
       setOnlineStatus("error");
-      setOnlineMessage(error instanceof Error ? error.message : "No se pudo completar la busqueda online.");
+      setOnlineMessage(
+        error instanceof Error
+          ? error.message
+          : "No se pudo completar la busqueda online. Proba otra zona o repetilo en un momento.",
+      );
     }
   }
 
@@ -199,6 +212,10 @@ function App() {
 
   function printResource() {
     window.print();
+  }
+
+  function startAreaSearch(area: MontevideoArea) {
+    void runOnlineSearch(area.name);
   }
 
   return (
@@ -276,11 +293,23 @@ function App() {
           <div className="search-wrap">
             <span className="search-icon">⌕</span>
             <input
+              list="montevideo-areas"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Buscar por situacion, recurso o zona"
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  void runOnlineSearch();
+                }
+              }}
+              placeholder="Barrio, CCZ, municipio, recurso o situacion"
               aria-label="Buscar recursos"
             />
+            <datalist id="montevideo-areas">
+              {montevideoAreas.map((area) => (
+                <option key={`${area.type}-${area.name}`} value={area.name} />
+              ))}
+            </datalist>
           </div>
           <button
             className={classNames("toggle-favorites", onlyFavorites && "is-active")}
@@ -290,12 +319,27 @@ function App() {
           </button>
           <button
             className="primary online-button"
-            onClick={runOnlineSearch}
+            onClick={() => void runOnlineSearch()}
             disabled={onlineStatus === "loading"}
           >
             {onlineStatus === "loading" ? "Buscando..." : "Buscar online"}
           </button>
         </header>
+
+        <section className="online-guide">
+          <div>
+            <strong>Busqueda online para Montevideo</strong>
+            <span>Barrios, zonas, CCZ y municipios. Escribi y toca Buscar online, o elegi un ejemplo.</span>
+          </div>
+          <div className="area-suggestions" aria-label="Sugerencias de busqueda online">
+            {areaSuggestions.map((area) => (
+              <button key={`${area.type}-${area.name}`} className="area-chip" onClick={() => startAreaSearch(area)}>
+                <span>{area.name}</span>
+                <small>{area.type === "ccz" ? "zonal" : area.type}</small>
+              </button>
+            ))}
+          </div>
+        </section>
 
         {(onlineMessage || onlineResources.length > 0) && (
           <section className={classNames("online-strip", onlineStatus)}>
@@ -330,10 +374,15 @@ function App() {
               <span>{filteredResources.length} visibles</span>
             </div>
 
-            {filteredResources.length === 0 ? (
+            {onlineStatus === "loading" ? (
+              <div className="empty-state">
+                <strong>Buscando recursos online.</strong>
+                <p>Esto puede demorar unos segundos porque consulta fuentes abiertas externas.</p>
+              </div>
+            ) : filteredResources.length === 0 ? (
               <div className="empty-state">
                 <strong>No aparecieron recursos.</strong>
-                <p>Proba con otra palabra o desactiva filtros.</p>
+                <p>Proba con otro barrio, un CCZ cercano o limpia los filtros.</p>
               </div>
             ) : (
               filteredResources.map((resource) => (

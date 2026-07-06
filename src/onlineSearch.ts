@@ -1,4 +1,5 @@
 import type { Category, Resource } from "./types";
+import { findMontevideoArea } from "./data/montevideoAreas";
 
 type NominatimPlace = {
   display_name: string;
@@ -26,11 +27,13 @@ export type OnlineSearchResult = {
 
 const NOMINATIM_ENDPOINT = "https://nominatim.openstreetmap.org/search";
 const OVERPASS_ENDPOINTS = [
-  "https://overpass-api.de/api/interpreter",
   "https://overpass.kumi.systems/api/interpreter",
+  "https://overpass-api.de/api/interpreter",
 ];
 const SEARCH_RADIUS_METERS = 2600;
 const MAX_ONLINE_RESULTS = 28;
+const GEOCODE_TIMEOUT_MS = 8000;
+const OVERPASS_TIMEOUT_MS = 12000;
 
 const relevantAmenityLabels: Record<string, string> = {
   clinic: "Clinica / policlinica",
@@ -52,8 +55,23 @@ function buildSearchUrl(query: string) {
   url.searchParams.set("countrycodes", "uy");
   url.searchParams.set("limit", "1");
   url.searchParams.set("accept-language", "es");
-  url.searchParams.set("q", `${query}, Uruguay`);
+  url.searchParams.set("viewbox", "-56.45,-34.7,-55.95,-35.05");
+  url.searchParams.set("bounded", "1");
+  url.searchParams.set("q", query.toLowerCase().includes("montevideo") ? `${query}, Uruguay` : `${query}, Montevideo, Uruguay`);
   return url.toString();
+}
+
+async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, {
+      ...init,
+      signal: controller.signal,
+    });
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
 
 function buildOverpassQuery(lat: number, lon: number) {
@@ -181,35 +199,53 @@ function toResource(
 export async function searchOnlineResources(query: string): Promise<OnlineSearchResult> {
   const trimmed = query.trim();
   if (trimmed.length < 3) {
-    throw new Error("Escribi una zona o barrio con al menos 3 caracteres.");
+    throw new Error("Escribi un barrio, zona, CCZ o municipio de Montevideo.");
   }
 
-  const placeResponse = await fetch(buildSearchUrl(trimmed));
-  if (!placeResponse.ok) throw new Error("No se pudo ubicar la zona consultada.");
-  const places = (await placeResponse.json()) as NominatimPlace[];
-  const place = places[0];
-  if (!place) throw new Error("No encontre esa zona en Uruguay.");
+  const knownArea = findMontevideoArea(trimmed);
+  let place: NominatimPlace | undefined = knownArea
+    ? {
+        display_name: `${knownArea.name}, Montevideo, Uruguay`,
+        lat: String(knownArea.lat),
+        lon: String(knownArea.lon),
+        name: knownArea.name,
+      }
+    : undefined;
+
+  if (!place) {
+    const placeResponse = await fetchWithTimeout(buildSearchUrl(trimmed), {}, GEOCODE_TIMEOUT_MS);
+    if (!placeResponse.ok) throw new Error("No se pudo ubicar la zona consultada.");
+    const places = (await placeResponse.json()) as NominatimPlace[];
+    place = places[0];
+  }
+
+  if (!place) throw new Error("No encontre esa zona en Montevideo. Proba con un barrio, CCZ o municipio.");
 
   const lat = Number(place.lat);
   const lon = Number(place.lon);
   const body = new URLSearchParams({ data: buildOverpassQuery(lat, lon) });
   let payload: { elements?: OverpassElement[] } | null = null;
 
-  for (const endpoint of OVERPASS_ENDPOINTS) {
-    try {
-      const resourceResponse = await fetch(endpoint, {
-        method: "POST",
-        body,
-      });
-      if (!resourceResponse.ok) continue;
-      payload = (await resourceResponse.json()) as { elements?: OverpassElement[] };
-      break;
-    } catch {
-      payload = null;
-    }
+  try {
+    payload = await Promise.any(
+      OVERPASS_ENDPOINTS.map(async (endpoint) => {
+        const resourceResponse = await fetchWithTimeout(
+          endpoint,
+          {
+            method: "POST",
+            body,
+          },
+          OVERPASS_TIMEOUT_MS,
+        );
+        if (!resourceResponse.ok) throw new Error("Overpass unavailable");
+        return (await resourceResponse.json()) as { elements?: OverpassElement[] };
+      }),
+    );
+  } catch {
+    payload = null;
   }
 
-  if (!payload) throw new Error("La fuente online no respondio. Proba de nuevo en un momento.");
+  if (!payload) throw new Error("La fuente online no respondio a tiempo. Proba de nuevo o elegi una zona cercana.");
   const unique = new Map<string, Resource>();
 
   for (const element of payload.elements || []) {
