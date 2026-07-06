@@ -1,0 +1,53 @@
+# Mapa Comunitario
+
+Directorio local de recursos comunitarios para orientar y derivar en Uruguay.
+
+La idea es simple: buscar una situacion, encontrar un recurso verificado, copiar una derivacion breve y guardar notas locales sin depender de una base de datos externa.
+
+## Que incluye
+
+- Busqueda por situacion, institucion, publico, zona o telefono.
+- Filtros por salud mental, violencia, calle, consumo, trabajo, educacion, tramites y emergencia.
+- Fichas con telefono, horarios, fuente oficial y fecha de verificacion.
+- Favoritos y notas locales guardadas en el navegador.
+- Carga de recursos barriales o institucionales propios.
+- Boton para copiar una derivacion breve.
+- Vista imprimible de cada ficha.
+
+## Aviso importante
+
+Esta herramienta no reemplaza atencion profesional, asesoramiento legal ni servicios de emergencia. Si hay riesgo inmediato para la vida, violencia en curso o una emergencia, llamar al 911 o al servicio de urgencia correspondiente.
+
+Los datos de contacto pueden cambiar. Antes de usar la app en un contexto institucional, conviene revisar las fuentes oficiales y actualizar `src/data/resources.ts`.
+
+## Desarrollo local
+
+```bash
+npm install
+npm run dev
+```
+
+Para generar una version publicable:
+
+```bash
+npm run build
+```
+
+## Privacidad
+
+La app no tiene servidor propio. Favoritos, notas y recursos agregados se guardan en el navegador de la persona usuaria mediante `localStorage`.
+
+## Fuentes iniciales
+
+- [Linea Vida y apoyo emocional](https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias/prevencion-del-suicidio-0)
+- [Servicio telefonico por violencia domestica](https://www.gub.uy/ministerio-desarrollo-social/node/9758)
+- [Guia MSP de valoracion del riesgo suicida](https://www.gub.uy/ministerio-salud-publica/comunicacion/publicaciones/valoracion-del-riesgo-suicida-5-pasos-para-evaluacion-triage-guia-para)
+- [Telefonos MIDES para situacion de calle](https://www.gub.uy/ministerio-desarrollo-social/comunicacion/comunicados/ministerio-desarrollo-social-renueva-telefonos-para-recibir-informacion)
+- [Atencion ciudadana MIDES](https://www.gub.uy/ministerio-desarrollo-social/comunicacion/comunicados/unificacion-numero-informacion-general-del-ministerio-desarrollo-social)
+- [Via Trabajo](https://viatrabajo.mtss.gub.uy/)
+- [INEFOP](https://www.inefop.org.uy/categoria/Sugerencias--Reclamos-68)
+- [Uruguay Estudia](https://www.gub.uy/presidencia/comunicacion/noticias/uruguay-estudia-brinda-orientacion-educativa-traves-del-0800-2637)
+
+## Licencia
+
+MIT.
