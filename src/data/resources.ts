@@ -17,8 +17,8 @@ export const resources: Resource[] = [
     referral:
       "Si hay peligro inmediato o riesgo para la vida, llamar al 911 y permanecer en un lugar seguro si es posible.",
     sourceName: "Ministerio del Interior",
-    sourceUrl: "https://www.gub.uy/ministerio-interior/",
-    verifiedAt: "2026-07-06",
+    sourceUrl: "https://www.gub.uy/ministerio-interior/comunicacion/campanas/denunciar",
+    verifiedAt: "2026-07-22",
   },
   {
     id: "linea-vida",
@@ -36,9 +36,9 @@ export const resources: Resource[] = [
       "Linea de apoyo telefonico para situaciones de conducta suicida. No reemplaza emergencia movil o 911 si hay riesgo inmediato.",
     referral:
       "Para riesgo suicida o ideas de autoeliminacion, contactar Linea Vida al 0800 0767 o *0767. Si hay riesgo inmediato, llamar 911.",
-    sourceName: "Ministerio de Salud Publica",
-    sourceUrl: "https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias/prevencion-del-suicidio-0",
-    verifiedAt: "2026-07-06",
+    sourceName: "Ministerio de Salud Pública",
+    sourceUrl: "https://www.gub.uy/ministerio-salud-publica/salud-mental",
+    verifiedAt: "2026-07-22",
   },
   {
     id: "apoyo-emocional",
@@ -55,9 +55,9 @@ export const resources: Resource[] = [
       "Recurso de escucha y orientacion. Para emergencia o riesgo vital, priorizar servicios de urgencia.",
     referral:
       "Para malestar emocional sin riesgo inmediato, se puede sugerir llamar al 0800 1920 y consultar opciones de atencion.",
-    sourceName: "Ministerio de Salud Publica",
-    sourceUrl: "https://www.gub.uy/ministerio-educacion-cultura/comunicacion/noticias/prevencion-del-suicidio-0",
-    verifiedAt: "2026-07-06",
+    sourceName: "Ministerio de Salud Pública",
+    sourceUrl: "https://www.gub.uy/ministerio-salud-publica/salud-mental",
+    verifiedAt: "2026-07-22",
   },
   {
     id: "violencia-domestica",
@@ -76,8 +76,8 @@ export const resources: Resource[] = [
     referral:
       "Ante violencia domestica o de genero, llamar al 0800 4141 o *4141 para orientacion. Si hay peligro inmediato, llamar 911.",
     sourceName: "Ministerio de Desarrollo Social",
-    sourceUrl: "https://www.gub.uy/ministerio-desarrollo-social/node/9758",
-    verifiedAt: "2026-07-06",
+    sourceUrl: "https://guiaderecursos.mides.gub.uy/66589/servicio-telefonico-y-ayuda-a-mujer-en-situacion-de-violencia-domestica-0800-4141",
+    verifiedAt: "2026-07-22",
   },
   {
     id: "red-calle",
@@ -97,7 +97,7 @@ export const resources: Resource[] = [
       "Para una persona en situacion de calle en Montevideo, contactar 0800 365 0 o WhatsApp 091 365 000. En el interior o ante riesgo inmediato, llamar 911.",
     sourceName: "Ministerio de Desarrollo Social",
     sourceUrl: "https://www.gub.uy/ministerio-desarrollo-social/comunicacion/comunicados/ministerio-desarrollo-social-renueva-telefonos-para-recibir-informacion",
-    verifiedAt: "2026-07-06",
+    verifiedAt: "2026-07-22",
   },
   {
     id: "drogas-1020",
@@ -115,8 +115,8 @@ export const resources: Resource[] = [
     referral:
       "Para orientacion sobre consumo problematico, llamar a Linea Drogas *1020. Si hay intoxicacion o riesgo vital, llamar emergencia.",
     sourceName: "Junta Nacional de Drogas",
-    sourceUrl: "https://www.gub.uy/ministerio-salud-publica/comunicacion/publicaciones/valoracion-del-riesgo-suicida-5-pasos-para-evaluacion-triage-guia-para",
-    verifiedAt: "2026-07-06",
+    sourceUrl: "https://www.gub.uy/junta-nacional-drogas/tramites-y-servicios/servicios/linea-gratuita-1020",
+    verifiedAt: "2026-07-22",
   },
   {
     id: "mides-atencion",
@@ -128,15 +128,15 @@ export const resources: Resource[] = [
     audience: ["personas que necesitan orientacion social", "familias", "referentes"],
     situations: ["mides", "prestaciones", "tarjeta", "asistencia", "orientacion social"],
     phone: "0800 7263",
-    whatsapp: "098 00 7263",
+    whatsapp: "098 007 263",
     hours: "Consultar disponibilidad actual",
     notes:
       "Puerta de entrada para consultas de programas, prestaciones y orientacion social.",
     referral:
       "Para orientacion social general, contactar Atencion ciudadana MIDES al 0800 7263 o consultar el sitio oficial.",
     sourceName: "Ministerio de Desarrollo Social",
-    sourceUrl: "https://www.gub.uy/ministerio-desarrollo-social/comunicacion/comunicados/unificacion-numero-informacion-general-del-ministerio-desarrollo-social",
-    verifiedAt: "2026-07-06",
+    sourceUrl: "https://www.gub.uy/presidencia/comunicacion/noticias/nuevos-canales-comunicacion-del-ministerio-desarrollo-social",
+    verifiedAt: "2026-07-22",
   },
   {
     id: "via-trabajo",
@@ -154,8 +154,8 @@ export const resources: Resource[] = [
     referral:
       "Para busqueda laboral, ingresar a Via Trabajo y revisar perfil, postulaciones y orientacion disponible.",
     sourceName: "Ministerio de Trabajo y Seguridad Social",
-    sourceUrl: "https://viatrabajo.mtss.gub.uy/",
-    verifiedAt: "2026-07-06",
+    sourceUrl: "https://www.gub.uy/trabajo",
+    verifiedAt: "2026-07-22",
   },
   {
     id: "inefop",
@@ -174,8 +174,8 @@ export const resources: Resource[] = [
     referral:
       "Para cursos y formacion laboral, consultar INEFOP por el 0800 8764 o desde su sitio web.",
     sourceName: "INEFOP",
-    sourceUrl: "https://www.inefop.org.uy/categoria/Sugerencias--Reclamos-68",
-    verifiedAt: "2026-07-06",
+    sourceUrl: "https://www.inefop.uy/contacto",
+    verifiedAt: "2026-07-22",
   },
   {
     id: "uruguay-estudia",
@@ -187,15 +187,15 @@ export const resources: Resource[] = [
     audience: ["jovenes", "adultos", "personas que quieren retomar estudios"],
     situations: ["educacion", "terminar liceo", "estudiar", "becas", "trayectoria educativa"],
     phone: "0800 2637",
-    website: "https://www.gub.uy/ministerio-educacion-cultura/uruguay-estudia",
-    hours: "Lunes a viernes, 9:00 a 18:00",
+    website: "https://pue.edu.uy/",
+    hours: "Lunes a viernes, 9:00 a 16:00",
     notes:
-      "Programa de apoyo a continuidad educativa y culminacion de ciclos.",
+      "Programa de apoyo a la continuidad educativa y culminacion de ciclos. La opcion 3 del 0800 ANEP orienta sobre trayectorias educativas.",
     referral:
-      "Para retomar o culminar estudios, consultar Uruguay Estudia y sus vias de orientacion vigentes.",
-    sourceName: "Ministerio de Educacion y Cultura",
-    sourceUrl: "https://www.gub.uy/presidencia/comunicacion/noticias/uruguay-estudia-brinda-orientacion-educativa-traves-del-0800-2637",
-    verifiedAt: "2026-07-06",
+      "Para orientacion sobre trayectorias educativas, llamar al 0800 2637 opcion 3 o consultar el sitio de Uruguay Estudia.",
+    sourceName: "Administracion Nacional de Educacion Publica",
+    sourceUrl: "https://pcentrales.anep.edu.uy/node/362",
+    verifiedAt: "2026-07-22",
   },
 ];
 

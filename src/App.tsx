@@ -225,7 +225,7 @@ function App() {
           <div className="brand-mark">MC</div>
           <div>
             <h1>Mapa Comunitario</h1>
-            <p>Recursos para orientar y derivar con cuidado.</p>
+            <p>Conectá personas con recursos y servicios de Uruguay.</p>
           </div>
         </div>
 
@@ -556,6 +556,15 @@ function DetailPanel({
             </a>
           )}
           <span>{resource.isOnline ? "Consultado" : "Verificado"}: {resource.verifiedAt}</span>
+          {!resource.isOnline && (
+            <a
+              href={`https://github.com/Hefestion1989/mapa-comunitario/issues/new?template=dato-desactualizado.yml&title=${encodeURIComponent(`Dato desactualizado: ${resource.name}`)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Informar un dato desactualizado
+            </a>
+          )}
         </section>
       </div>
 
