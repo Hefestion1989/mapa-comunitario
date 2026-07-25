@@ -1,4 +1,5 @@
 export type Category =
+  | "salud"
   | "salud-mental"
   | "violencia"
   | "calle"

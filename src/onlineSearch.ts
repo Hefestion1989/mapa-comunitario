@@ -119,7 +119,7 @@ function mapCategory(tags: Record<string, string>): Category {
     return "educacion";
   }
   if (tags.amenity === "hospital" || tags.amenity === "clinic" || tags.amenity === "doctors" || tags.healthcare) {
-    return "salud-mental";
+    return "salud";
   }
   if (tags.amenity === "social_facility" || tags.amenity === "community_centre" || tags.amenity === "social_centre") {
     return "tramites";

@@ -200,6 +200,7 @@ export const resources: Resource[] = [
 ];
 
 export const categoryLabels: Record<Resource["category"], string> = {
+  salud: "Salud general",
   "salud-mental": "Salud mental",
   violencia: "Violencia",
   calle: "Calle",
