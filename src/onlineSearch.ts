@@ -27,8 +27,9 @@ export type OnlineSearchResult = {
 
 const NOMINATIM_ENDPOINT = "https://nominatim.openstreetmap.org/search";
 const OVERPASS_ENDPOINTS = [
-  "https://overpass.kumi.systems/api/interpreter",
+  "https://overpass.private.coffee/api/interpreter",
   "https://overpass-api.de/api/interpreter",
+  "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
 ];
 const SEARCH_RADIUS_METERS = 2600;
 const MAX_ONLINE_RESULTS = 28;
