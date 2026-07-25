@@ -11,6 +11,7 @@ const STORAGE_CUSTOM = "mapa-comunitario:custom-resources";
 
 const categoryOrder: Array<Category | "todos"> = [
   "todos",
+  "salud",
   "salud-mental",
   "violencia",
   "calle",
