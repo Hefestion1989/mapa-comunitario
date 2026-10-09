@@ -80,3 +80,7 @@ Al usar "Buscar online", el texto de búsqueda se consulta contra servicios púb
 ## Licencia
 
 MIT.
+
+## Build para ChatGPT Sites
+
+`npm ci && npm run build:sites` genera `dist/` y los metadatos de Sites. El build de GitHub Pages sigue usando `npm run build` en GitHub Actions. La búsqueda online consulta Nominatim y Overpass desde el navegador; conviene comprobarla en el dominio final una vez publicado. La publicación requiere vincular este repositorio a un proyecto de Sites.
